@@ -107,6 +107,18 @@ namespace Spice.Areas.Admin.Controllers
             return NotFound();
         }
 
+        //Assigment 1:
+        //Get Details
+        public async Task<IActionResult>Details(int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                var cat = await dbContext.Category.FindAsync(id);
+                return View(cat);
+            }
+            return NotFound();
+        }
+
 
     }
 }
