@@ -12,16 +12,16 @@ namespace Spice.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-       private readonly ApplicationDbContext dbContext; 
+        private readonly ApplicationDbContext dbContext;
 
         public CategoryController(ApplicationDbContext db)
         {
             dbContext = db;
         }
-        public async Task< IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
 
-            return  View(await dbContext.Category.ToListAsync());
+            return View(await dbContext.Category.ToListAsync());
         }
         //GET for Create
         public IActionResult Create()
@@ -41,9 +41,9 @@ namespace Spice.Areas.Admin.Controllers
             }
             return View(category);
         }
-      // GET - EDIT
+        // GET - EDIT
 
-        public async Task <IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -73,6 +73,40 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //GET - DELETE
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+
+            }
+            var category = await dbContext.Category.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        //POST _ DELETE
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                var cat = await dbContext.Category.FindAsync(id);
+                if (cat == null)
+                    return NotFound();
+                dbContext.Category.Remove(cat);
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+            }
+            return NotFound();
+        }
+
 
     }
 }
