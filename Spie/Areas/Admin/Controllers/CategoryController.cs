@@ -41,6 +41,38 @@ namespace Spice.Areas.Admin.Controllers
             }
             return View(category);
         }
-      
+      // GET - EDIT
+
+        public async Task <IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+
+            }
+            var category = await dbContext.Category.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Update(category);
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(category);
+        }
+
+        //GET - DELETE
+
     }
 }
