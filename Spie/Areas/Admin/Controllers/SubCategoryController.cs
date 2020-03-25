@@ -124,7 +124,13 @@ namespace Spice.Areas.Admin.Controllers
         {
             if (id == null)
             {
+                return NotFound();
+            }
 
+            var subCat = await dbContext.SubCategory.SingleOrDefaultAsync(m => m.Id == id);
+            if (subCat == null)
+            {
+                return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -137,7 +143,10 @@ namespace Spice.Areas.Admin.Controllers
                 }
                 else
                 {
-                    dbContext.SubCategory.Add(model.SubCategory);
+                    var subCatFromDb = await dbContext.SubCategory.FindAsync(id);
+                    subCatFromDb.Name = model.SubCategory.Name;
+
+                     
                     await dbContext.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
