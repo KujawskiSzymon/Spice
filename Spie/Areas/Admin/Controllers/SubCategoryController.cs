@@ -122,6 +122,11 @@ namespace Spice.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id,SubCategoryAndCategoryViewModel model)
         {
+            if (id == null)
+            {
+
+            }
+
             if (ModelState.IsValid)
             {
                 var doesSubCategoryExsist = dbContext.SubCategory.Include(c => c.Category).Where(s => s.Name == model.SubCategory.Name && s.Category.Id == model.SubCategory.CategoryId);
