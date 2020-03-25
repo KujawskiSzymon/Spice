@@ -13,7 +13,12 @@ namespace Spice.Areas.Admin.Controllers
     [Area("Admin")]
     public class SubCategoryController : Controller
     {
+
         private readonly ApplicationDbContext dbContext;
+
+        [TempData]
+        public string StatusMessage { get; set; }
+
 
         public SubCategoryController(ApplicationDbContext db)
         {
@@ -54,6 +59,7 @@ namespace Spice.Areas.Admin.Controllers
                 if (doesSubCategoryExsist.Count() > 0)
                 {
                     //Error
+                    StatusMessage = "Error: Sub Category exists under " + doesSubCategoryExsist.First().Category.Name + " category. Please use another name ";
                 }
                 else
                 {
@@ -66,7 +72,8 @@ namespace Spice.Areas.Admin.Controllers
             {
                 CategoryList = await dbContext.Category.ToListAsync(),
                 SubCategory = model.SubCategory,
-                SubCategoryList = await dbContext.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync()
+                SubCategoryList = await dbContext.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
+                StatusMessage = StatusMessage
             };
             return View(viewModel);
 
