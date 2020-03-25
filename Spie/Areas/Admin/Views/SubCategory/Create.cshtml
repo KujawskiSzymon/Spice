@@ -5,13 +5,13 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+    <h2 class="text-info">Create Sub Category</h2>
 <br />
 
 
 
-<h2 class="text-info">Create Sub Category</h2>
-<div class="border backgroundWhite">
+
+<div class="border backgroundWhite row">
 
     <div class="col-8 border-right">
         <form method="post" asp-action="Create">
@@ -45,7 +45,7 @@
     <div class="col-3 offset-1">
         @if (Model.SubCategoryList.Count() > 0)
         {
-            <p>Exsist</p>
+            <p>Exist</p>
             <div id="SubCategoryList">
                 <ul class="list-group"></ul>
             </div>
