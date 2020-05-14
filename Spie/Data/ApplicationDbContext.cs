@@ -16,5 +16,6 @@ namespace Spie.Data
         }
         public DbSet<Category> Category { get; set; }
         public DbSet<SubCategory> SubCategory { get; set; }
+        public DbSet<MenuItem> MenuItem { get; set; }
     }
 }
