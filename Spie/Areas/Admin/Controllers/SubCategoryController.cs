@@ -156,6 +156,50 @@ namespace Spice.Areas.Admin.Controllers
             return View(viewModel);
 
         }
+        [HttpGet]
+        public async Task<IActionResult>Details(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var subcat = await dbContext.SubCategory.FindAsync(id);
+                SubCategoryNameAndCategoryNameViewModel viewModel = new SubCategoryNameAndCategoryNameViewModel()
+                {
+                    SubCategoryName = subcat.Name,
+                    IdSubCategory = subcat.Id,
+                    CategoryName = dbContext.Category.Where(x => x.Id == subcat.CategoryId).FirstOrDefault().Name
+
+                };
+                return View(viewModel);
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>Delete(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var subcat = await dbContext.SubCategory.FindAsync(id);
+                SubCategoryNameAndCategoryNameViewModel viewModel = new SubCategoryNameAndCategoryNameViewModel()
+                {
+                    SubCategoryName = subcat.Name,
+                    IdSubCategory = subcat.Id,
+                    CategoryName = dbContext.Category.Where(x => x.Id == subcat.CategoryId).FirstOrDefault().Name
+
+                };
+                return View(viewModel);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult>Delete(int? id)
+        {
+            var subCat = await dbContext.SubCategory.FirstOrDefaultAsync(x => x.Id == id);
+            dbContext.SubCategory.Remove(subCat);
+            await dbContext.SaveChangesAsync();
+            return View("Index");
+        }
 
 
     }
